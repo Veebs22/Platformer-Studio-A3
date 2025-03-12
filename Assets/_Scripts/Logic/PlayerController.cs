@@ -111,5 +111,9 @@ public class PlayerController : MonoBehaviour
         isDashing = true;
         rb.linearVelocity = Vector3.zero;
         rb.AddForce(transform.forward * dashForce, ForceMode.Impulse);
+
+    }
+    public void UpdateMaxSpeed(float speed) {
+        maxSpeed = speed;
     }
 }
