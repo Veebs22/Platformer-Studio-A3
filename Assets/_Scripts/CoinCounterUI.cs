@@ -1,16 +1,35 @@
+using System.Collections;
+using DG.Tweening;
+using TMPro;
 using UnityEngine;
-
-public class CoinCounterUI : MonoBehaviour
+ public class CoinCounterUI : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+ [SerializeField] private TextMeshProUGUI current;
+ [SerializeField] private TextMeshProUGUI toUpdate;
+ [SerializeField] private Transform coinTextContainer;
+ [SerializeField] private float duration;
 
-    // Update is called once per frame
-    void Update()
+ private float containerInitPosition;
+ private float moveAmount;
+    private void Start()
     {
-        
+        Canvas.ForceUpdateCanvases(); // for making sure the data we get is accurate (as the animation software "doTween" is asyncronous and might report the wrong postion)
+        current.SetText("0");
+        toUpdate.SetText("0");
+        containerInitPosition = coinTextContainer.localPosition.y;
+        moveAmount = current.rectTransform.rect.height;
     }
-}
+    public void UpdateScore(int score)
+    {
+        toUpdate.SetText($"{score}");
+        coinTextContainer.DOLocalMoveY(containerInitPosition+moveAmount, duration);
+        StartCoroutine(ResetCoinContainer(score));
+    }
+    private IEnumerator ResetCoinContainer(int score) 
+    {
+        yield return new WaitForSeconds(duration);
+        current.SetText($"{score}");
+        Vector3 localPosition = coinTextContainer.localPosition;
+        coinTextContainer.localPosition = new Vector3(localPosition.x, containerInitPosition, localPosition.z);
+    }
+ }
