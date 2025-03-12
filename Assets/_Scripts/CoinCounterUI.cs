@@ -8,8 +8,10 @@ using UnityEngine;
  [SerializeField] private TextMeshProUGUI toUpdate;
  [SerializeField] private Transform coinTextContainer;
  [SerializeField] private float duration;
+ [SerializeField] private Ease animationCurve;
 
- private float containerInitPosition;
+
+    private float containerInitPosition;
  private float moveAmount;
     private void Start()
     {
@@ -22,7 +24,7 @@ using UnityEngine;
     public void UpdateScore(int score)
     {
         toUpdate.SetText($"{score}");
-        coinTextContainer.DOLocalMoveY(containerInitPosition+moveAmount, duration);
+        coinTextContainer.DOLocalMoveY(containerInitPosition + moveAmount,duration).SetEase(animationCurve);
         StartCoroutine(ResetCoinContainer(score));
     }
     private IEnumerator ResetCoinContainer(int score) 
